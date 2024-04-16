@@ -6,3 +6,86 @@ output: html
 categories: project
 ---
 
+Get the Data
+```{r}
+install.packages("tidytuesdayR")
+library(dplyr)
+library(tidyr)
+library(readr)
+
+safi_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-06-13/safi_data.csv')
+```
+
+
+People hungry per month in each village by year
+```{r}
+#create new column with only the year
+safi_data$year<-year(ymd(safi_data$interview_date))
+
+data16<- filter(safi_data$year == 2016)
+data17<- filter(safi_data$year == 2017)
+```
+
+```{r}
+#clean month_lack_food column
+
+#turn list of months into separate cells that are stacked (long format)
+
+library(tidyr)
+separate_longer_delim(data16, months_lack_food, sep = ";")
+separate_longer_delim(data17, months_lack_food, sep = ";")
+
+```
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+
+data16<- data16|> group_by(year, village)|>
+  ggplot(data = data16, aes(x=lack_food, color = village))+
+  geom_hist()+
+  theme_pubr()+
+  labs(x= "months", y="count of months without food")+
+  facet_wrap(~year)
+
+data17<- data17|> group_by(year, village)|>
+  ggplot(data = data17, aes(x=lack_food, color = village))+
+  geom_hist()+
+  theme_pubr()+
+  labs(x= "months", y= "count of months without food")+
+  facet_wrap(~year)
+
+```
+
+
+
+
+Understand possible causes of hunger in each village
+```{r}
+safi_memb <- safi_data|> group_by(village)|>
+  mutate(percent_members = mean(memb_assoc == "yes")*100)
+
+safi_non-memb <- safi_data|> group_by(village)|>
+  mutate(percent_members = mean(memb_assoc == "no")*100)
+
+#see about running some stats to see if there are significant differences between villages
+```
+Will likely need to revise data frames to combine into one
+```{r}
+members<- filter(safi_data$memb_assoc == "yes")
+non_members<- filter(safi_data$memb_assoc == "No")
+
+  ggplot(data = members, aes(x=village, y= mean, color = village))+
+  geom_bar()+
+  theme_pubr()+
+  labs(x= "Village", y="Percent members")
+
+ggplot(data = non_members, aes(x=village, y= mean, color = village))+
+  geom_bar()+
+  theme_pubr()+
+  labs(x= "Village", y="Percent non-members")
+
+```
+
+Probably need to come up with more analysis to take up 45min

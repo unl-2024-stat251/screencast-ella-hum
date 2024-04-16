@@ -1,23 +1,24 @@
 ---
-author: "Your Name"
+author: "Ella Humphrey"
 date: "2023-04-18"
 title: "Project Dataset and Topics"
 output: html
 categories: project
 ---
 
-[Link to dataset]()
+[Link to dataset]('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-06-13/safi_data.csv')
 
 Things you plan to investigate using this dataset:
 
-- Thing 1
-- Thing 2
-- Thing 3
+- I will investigate the amount of people that are hungry in each village by month. My goal is to create a histogram where each bar represents the number of households in the village that are hungry by month. I could also facet wrap this by village since not facet wrapping would result in 36 bars on one graph. I also want to group this data by the year the people were surveyed so i might make two separate data frames for 2016 and 2017.
+- My next goal is to understand why each village may lack food during certain months. I will fist find the percentage of households in each village that are members of the irrigation association. Maybe members have greater food security.
+Find percentages that are yes and exclude nulls.
+- Next I want to see if there is a relationship between being a member of the irrigation association and living in the village for an extended period of time.I will have two graphs one for people who are members and another for non members. I will compute a mean for years lived in each village. So I will have a bar graph with villages on the x-axis and the mean on the y-axis. I could also throw in 95% confidence intervals with whiskers.
 
 Stat 251 topics you plan to cover during the analysis:
 
-1. Topic 1
-2. Topic 2
-3. Topic 3
-4. Topic 4
+1. Using ggplot to create a histogram and bar graph
+2. use lubridate to create a separate year column so that i can easily group_by(year)
+3. Use various dplyr commands to compute means and creating summaries
+4. Use tidyr to manipulate columns such as the month_lack_food column to turn the values from a list to a longer format, where each month will have its own cell.
 
