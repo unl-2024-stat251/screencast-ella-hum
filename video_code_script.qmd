@@ -1,0 +1,104 @@
+---
+title: "video_code_script"
+format: html
+editor: visual
+---
+
+```{r}
+#install.packages("tidytuesdayR")
+library(dplyr)
+library(tidyr)
+library(readr)
+
+safi_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-06-13/safi_data.csv')
+```
+
+```{r}
+library(lubridate)
+
+safi_data$year<-year(ymd(safi_data$interview_date))
+
+data16<- safi_data|> filter(safi_data$year == 2016)
+data16<- data16|>filter(!data16$key_ID == 1)
+
+data17<- safi_data|> filter(safi_data$year == 2017)
+
+```
+
+```{r}
+
+data16<-separate_longer_delim(data16, months_lack_food, delim = ";")
+
+?separate_longer_delim()
+
+data17<-separate_longer_delim(data17, months_lack_food, delim = ";")
+```
+
+```{r}
+
+summary16<- data16|>group_by(village)|>
+  summarise(n_months = n())|>
+  ungroup()
+
+summary17<- data17|> group_by(village)|>
+  summarise(n_months = n())|>
+  ungroup()
+
+?inner_join
+
+summaryall<- inner_join(summary16, summary17, by = "village")
+
+```
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+
+data16<-data16|>group_by(key_ID, village)
+
+ggplot(data = data16, aes(x = months_lack_food, fill = village))+
+  geom_bar(stat = "count", position = "dodge")+
+  theme_pubr()+
+  labs(title = "The Number of Households Without Food by Month")+
+  labs(x = "Months without Food", y = "Count of Montsh")+
+  scale_y_continuous(expand = c(0,0), limits = c(0,35))
+
+ggplot(data = data17, aes(x = months_lack_food, fill = village))+
+  geom_bar(stat = "count", position = "dodge")+
+  theme_pubr()+
+  labs(title = "The Number of Households Without Food by Month")+
+  labs(x = "Months without Food", y = "Count of Montsh")+
+  scale_y_continuous(expand = c(0,0), limits = c(0,25))
+
+
+```
+
+```{r}
+
+safi_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-06-13/safi_data.csv')
+
+
+safi_data<- safi_data|>filter(!safi_data$key_ID == 1)
+safi_data<- safi_data|>filter(!safi_data$memb_assoc == 'NULL')
+
+safi_memb<- safi_data|>group_by(village)|>
+  mutate(percent_members = mean(memb_assoc == 'yes')*100)
+
+safi_nonmemb<- safi_data|>group_by(village)|>
+  mutate(percent_nonmembers = mean(memb_assoc == 'no')*100)
+
+percent_df<- bind_cols(safi_memb,safi_nonmemb['percent_nonmembers'])
+
+
+```
+
+```{r}
+
+ggplot(percent_df, aes(x = village))+
+  geom_bar(aes(y= percent_members, fill = "percent_members")stat = "identity", position = "dodge")+
+  geom_bar(aes(y= percent_nonmembers, fill = "percent_nonmembers")stat = "identity", position = "dodge")
+```
+
+#The error that I did not figure out on camera was that I was missing a comma before using stat = "identity"
+
+#geom_bar(aes(y= percent_members, fill = "percent_members"),stat = "identity", position = "dodge")

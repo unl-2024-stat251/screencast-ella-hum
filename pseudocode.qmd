@@ -26,6 +26,8 @@ data16<- filter(safi_data$year == 2016)
 data17<- filter(safi_data$year == 2017)
 ```
 
+![Wide to Long R](20240422_103834.jpg)
+
 ```{r}
 #clean month_lack_food column
 
@@ -58,7 +60,7 @@ data17<- data17|> group_by(year, village)|>
 
 ```
 
-
+![Wide to Long R](20240422_103849.jpg)
 
 
 Understand possible causes of hunger in each village
@@ -88,4 +90,4 @@ ggplot(data = non_members, aes(x=village, y= mean, color = village))+
 
 ```
 
-Probably need to come up with more analysis to take up 45min
+![Wide to Long R](20240422_103905.jpg)
