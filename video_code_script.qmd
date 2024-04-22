@@ -102,3 +102,15 @@ ggplot(percent_df, aes(x = village))+
 #The error that I did not figure out on camera was that I was missing a comma before using stat = "identity"
 
 #geom_bar(aes(y= percent_members, fill = "percent_members"),stat = "identity", position = "dodge")
+
+#\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_#
+
+Time Index of 4 Techniques
+
+Technique 1: Dates and Times using lubridate (6:20)
+
+Technique 2: Tidyr-\> separate_longer_delim(13:00), group_by(17:30, 25:30, 39:00)
+
+Technique 3: Dplyr-\> filter (7:40, 36:25), summarise (18:00), inner-join(22:40), mutate(39:50), bind_cols(43:00)
+
+Technique 4: ggplot (22:55, 47:00)
